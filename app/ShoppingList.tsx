@@ -1,55 +1,27 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Checkbox } from "expo-checkbox";
 
-interface ShoppingItem {
-  id: number;
-  name: string;
-  qty: string;
-  checked: boolean;
-}
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/redux/store";
+import {addItem, updateItem, deleteItem, toggleItem, ShoppingItem  } from "@/redux/reducers/shoppingSlice"; 
 export default function ShoppingList() {
+  const dispatch = useDispatch();
+  const items = useSelector((state: RootState) => state.shopping.items);
+
   const [itemName, setItemName] = useState("");
   const [itemQty, setItemQty] = useState("1");
- 
   const [editingId, setEditingId] = useState<number | null>(null);
-
-  const [items, setItems] = useState<ShoppingItem[]>([
-    { id: 1, name: "Bananas", qty: "3 bunch", checked: false },
-    { id: 2, name: "Milk Organic Eggs", qty: "3 dosh", checked: false },
-    { id: 3, name: "Bell Peppers", qty: "2 units", checked: false },
-  ]);
 
   const handleAddOrSave = () => {
     if (itemName.trim() === "") return;
 
     if (editingId !== null) {
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === editingId
-            ? { ...item, name: itemName, qty: itemQty }
-            : item
-        )
-      );
+      dispatch(updateItem({ id: editingId, name: itemName, qty: itemQty }));
       setEditingId(null);
     } else {
-      const newItem: ShoppingItem = {
-        id: Date.now(),
-        name: itemName,
-        qty: itemQty,
-        checked: false,
-      };
-      setItems([...items, newItem]);
+      dispatch(addItem({ name: itemName, qty: itemQty }));
     }
 
     setItemName("");
@@ -62,34 +34,22 @@ export default function ShoppingList() {
     setItemQty(item.qty);
   };
 
-  const toggleCheckbox = (id: number) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
-      )
-    );
-  };
-
   const handleDelete = (id: number) => {
-    Alert.alert(
-      "Are you sure you want to delete?",
-      "When you delete item it won't be able to be retrieve.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: () => {
-            setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-            if (editingId === id) {
-              setEditingId(null);
-              setItemName("");
-              setItemQty("1");
-            }
-          },
+    Alert.alert("Delete Item", "Are you sure?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => {
+          dispatch(deleteItem(id));
+          if (editingId === id) {
+            setEditingId(null);
+            setItemName("");
+            setItemQty("1");
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
@@ -99,76 +59,40 @@ export default function ShoppingList() {
       <View style={styles.inputZone}>
         <View style={{ flex: 2, marginRight: 10 }}>
           <Text style={styles.label}>Item name:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Item Name"
-            value={itemName}
-            onChangeText={setItemName}
-          />
+          <TextInput style={styles.input} value={itemName} onChangeText={setItemName} />
         </View>
         <View style={{ flex: 0.8, marginRight: 10 }}>
           <Text style={styles.label}>Qty:</Text>
-          <TextInput
-            style={styles.input}
-            value={itemQty}
-            onChangeText={setItemQty}
-          />
+          <TextInput style={styles.input} value={itemQty} onChangeText={setItemQty} />
         </View>
 
-        <TouchableOpacity
-          style={[styles.addButton, editingId !== null && styles.saveButton]}
+        <TouchableOpacity 
+          style={[styles.addButton, editingId !== null && styles.saveButton]} 
           onPress={handleAddOrSave}
         >
-          <Text style={styles.addButtonText}>
-            {editingId !== null ? "Save" : "Add"}
-          </Text>
+          <Text style={styles.addButtonText}>{editingId !== null ? "Save" : "Add"}</Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.list}>
         {items.map((item) => (
-          <View
-            key={item.id}
-            style={[styles.itemRow, editingId === item.id && styles.editingRow]}
-          >
+          <View key={item.id} style={[styles.itemRow, editingId === item.id && styles.editingRow]}>
             <View style={styles.check}>
               <Checkbox
-                style={styles.checkbox}
                 value={item.checked}
-                onValueChange={() => toggleCheckbox(item.id)}
+                onValueChange={() => dispatch(toggleItem(item.id))}
                 color={item.checked ? "#080808" : undefined}
               />
               <View>
-                <Text
-                  style={[
-                    styles.itemText,
-                    item.checked && styles.completedText,
-                  ]}
-                >
-                  {item.name}
-                </Text>
-                <Text
-                  style={[
-                    styles.itemChild,
-                    item.checked && styles.completedText,
-                  ]}
-                >
-                  *{item.qty}
-                </Text>
+                <Text style={[styles.itemText, item.checked && styles.completedText]}>{item.name}</Text>
+                <Text style={[styles.itemChild, item.checked && styles.completedText]}>*{item.qty}</Text>
               </View>
             </View>
 
             <View style={styles.itemActions}>
               <TouchableOpacity onPress={() => startEdit(item)}>
-                <Ionicons
-                  name={
-                    editingId === item.id ? "eye-outline" : "pencil-outline"
-                  }
-                  size={20}
-                  color={"blue"}
-                />
+                <Ionicons name={editingId === item.id ? "eye-outline" : "pencil-outline"} size={20} color={"blue"} />
               </TouchableOpacity>
-
               <TouchableOpacity onPress={() => handleDelete(item.id)}>
                 <Ionicons name="trash" size={20} color="#ff4444" />
               </TouchableOpacity>
@@ -179,6 +103,7 @@ export default function ShoppingList() {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
