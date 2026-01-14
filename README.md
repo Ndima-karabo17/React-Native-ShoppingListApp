@@ -70,3 +70,16 @@ npm install @reduxjs/toolkit react-native expo-checkbox @expo/vector-icons
 npx expo start
 
 Open the app: Scan the QR code with Expo Go (Android) or your Camera app (iOS).
+
+## User Guide
+
+Welcome to your Shopping List app, this tool helps you track your groceries and household needs.
+
+1. Adding an Item
+Locate the "Item name" input at the top.
+
+Enter the product (e.g., "Apples").
+
+In the "Qty" box, enter the amount (e.g., "2 packs").
+
+Tap the black "Add" button. The item will be saved immediately.
