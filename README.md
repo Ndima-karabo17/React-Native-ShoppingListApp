@@ -16,3 +16,13 @@ npm or yarn
 Expo CLI (npm install -g expo-cli)
 
 iOS/Android Simulator or the Expo Go app on a physical device.
+
+2. Project Architecture
+   
+The application uses a modern Redux Toolkit structure to manage state and API interactions.
+
+redux/store.ts: The central state container.
+
+redux/reducers/shoppingSlice.ts: Contains the logic for API calls (Thunks) and state mutations.
+
+ShoppingList.tsx: The main UI component using hooks to interact with Redux.
