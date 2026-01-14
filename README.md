@@ -92,3 +92,11 @@ Checking Off: Tap the checkbox next to an item when you've put it in your cart. 
 Editing: Tap the Blue Pencil icon. The item details will move back to the top input boxes. Modify the text and tap "Save".
 
 Deleting: Tap the Red Trash icon. A confirmation alert will appear to prevent accidental deletions.
+
+
+Advantage of using my app
+-
+
+3. Syncing
+The app automatically fetches the latest data from the server every time you open it.
+ This means if you share the API URL with a partner, you will both see the same list.
