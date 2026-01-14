@@ -1,6 +1,3 @@
-npm install
-
-npm install @reduxjs/toolkit react-native expo-checkbox @expo/vector-icons
 
 
 
@@ -58,3 +55,12 @@ ShoppingList.tsx: The main UI component using hooks to interact with Redux.
    -
 The app relies on an external API (MockAPI). Create a .env file in the root director
 
+4. Installation & Running
+   -
+Clone the repository and navigate to the folder.
+
+Install dependencies:
+
+npm install
+
+npm install @reduxjs/toolkit react-native expo-checkbox @expo/vector-icons
