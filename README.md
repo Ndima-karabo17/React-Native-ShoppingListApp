@@ -76,6 +76,7 @@ Open the app: Scan the QR code with Expo Go (Android) or your Camera app (iOS).
 Welcome to your Shopping List app, this tool helps you track your groceries and household needs.
 
 1. Adding an Item
+   -
 Locate the "Item name" input at the top.
 
 Enter the product (e.g., "Apples").
@@ -83,3 +84,11 @@ Enter the product (e.g., "Apples").
 In the "Qty" box, enter the amount (e.g., "2 packs").
 
 Tap the black "Add" button. The item will be saved immediately.
+
+2. Managing Your Items
+   -
+Checking Off: Tap the checkbox next to an item when you've put it in your cart. The text will strike through to show it's completed.
+
+Editing: Tap the Blue Pencil icon. The item details will move back to the top input boxes. Modify the text and tap "Save".
+
+Deleting: Tap the Red Trash icon. A confirmation alert will appear to prevent accidental deletions.
