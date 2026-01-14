@@ -68,3 +68,5 @@ npm install @reduxjs/toolkit react-native expo-checkbox @expo/vector-icons
 5. Start the application:
    -
 npx expo start
+
+Open the app: Scan the QR code with Expo Go (Android) or your Camera app (iOS).
