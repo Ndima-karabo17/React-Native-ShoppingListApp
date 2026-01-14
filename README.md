@@ -64,3 +64,7 @@ Install dependencies:
 npm install
 
 npm install @reduxjs/toolkit react-native expo-checkbox @expo/vector-icons
+
+5. Start the application:
+   -
+npx expo start
